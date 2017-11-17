@@ -3,37 +3,9 @@ var router = express.Router();
 const Sequelize = require('sequelize');
 var helper = require('../helper/response')
 var messages = require('../messages')
-
 //loas models
 var user = require('../models/Users');
 
-// /* GET users listing. */
-// router.get('/', function(req, res, next) {
-//     const sequelize = new Sequelize('mysql://root:@127.0.0.1:3306/perpustakaan');
-//
-//     const User = sequelize.define('user', {
-//         id: {
-//             type: Sequelize.STRING,
-//             primaryKey: true
-//         },
-//         full_name: {
-//             type: Sequelize.STRING
-//         },
-//         level: {
-//             type: Sequelize.STRING
-//         }
-//     });
-//
-//     User.sync({force: false}).then(() => {
-//         // Table created
-//         return User.create({
-//             id: 'USR-1233',
-//             full_name: 'Hanco3ck',
-//             level:3
-//         });
-//     });
-//     res.send("success");
-// });
 router.post('/login', function (req, res, next) {
     req.checkBody("username", messages.required).notEmpty();
     req.checkBody("password", messages.required).notEmpty();
@@ -44,7 +16,7 @@ router.post('/login', function (req, res, next) {
         return;
     } else {
         // normal processing here
-        user.findOne({where:{username:req.body.username}}).then(user => {
+        user.findOne({where:{username:req.body.username}}).then(function (user) {
             handleLogin(req, res, user);
         });
 
