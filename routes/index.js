@@ -1,43 +1,20 @@
 var express = require('express');
 var router = express.Router();
 
-//fake database
-var users = {
-    'adzim':{
-        'age':21,
-        'sex':'male',
-        'birthday' : '1995-07-02'
-    },
-    'bejo': {
-        'age' : 20,
-        'sex':'male',
-        'birthday'  : '1995-02-03'
-    }
-}
+//route
+var users = require('./users'),
+    buku  = require('./buku');
 
-//fake model
-var findByUserName = function (username, callback) {
-    // Perform database query that calls callback when it's done
-    // This is our fake database
-    if (!users[username]) {
-        return callback(new Error('No matching '+username));
-    }
-
-    return callback(null, users[username]);
-}
+//middleware
+var auth = require('../middlewares/auth');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  res.send('should redirect to login page')
 });
 
-router.get('/user/:username', function (req, res, next) {
-    var username = req.params.username;
-    findByUserName(username, function (error, user) {
-        if (error) return next(error);
-
-        return res.send(user);
-    })
-});
+router.use('/users', users);
+router.use(auth);
+router.use('/buku', buku);
 
 module.exports = router;
