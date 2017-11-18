@@ -6,5 +6,8 @@
     "username"  : "root",
     "password"  : "",
     "dbname"    : "perpustakaan"
+  },
+  "jwt" : {
+    "secret_key":"Perpust4k4n"
   }
 }

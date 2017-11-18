@@ -1,8 +1,10 @@
 var express = require('express');
+var jwt    = require('jsonwebtoken');
+var config = require('../config.json');
 var router = express.Router();
 const Sequelize = require('sequelize');
-var helper = require('../helper/response')
-var messages = require('../messages')
+var helper = require('../helper/response');
+var messages = require('../messages');
 //loas models
 var user = require('../models/Users');
 
@@ -26,7 +28,15 @@ router.post('/login', function (req, res, next) {
             if (user.password === req.body.password) {
                 if (!user.auth_token) token=generateToken(user); else token=user.auth_token;
                 user.update({auth_token:token, is_login:1}).then(function (result) {
-                    helper.resErr(res, 200, "Success Get Data", result)
+                    const payload = {
+                        id: user.id
+                    };
+                    var token = jwt.sign(payload, config.jwt.secret_key);
+                    result = {
+                        data : result,
+                        token: token
+                    };
+                    helper.resErr(res, 200, "Success Get Data", result);
                 });
             } else {
                 helper.resErr(res, 200, "Worng password")

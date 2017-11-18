@@ -82,10 +82,10 @@ router.post('/tambah', function (req, res, next) {
 
 router.put('/update/:id', function (req, res, next) {
     data = {
-        judul    :req.body.judul,
-        pengarang:req.body.penerbit,
-        tahun_terbit:req.body.tahun_terbit,
-        isbn:req.body.isbn
+        judul           :req.body.judul,
+        pengarang       :req.body.penerbit,
+        tahun_terbit    :req.body.tahun_terbit,
+        isbn            :req.body.isbn
     };
     buku.update(data, {where:{id:req.params.id}}).then(function (result) {
         if (result[0] === 1) {
