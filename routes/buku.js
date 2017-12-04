@@ -4,7 +4,9 @@ const Sequelize = require('sequelize');
 var helper = require('../helper/response');
 var messages = require('../messages');
 //loas models
-var buku = require('../models/Buku');
+var buku = require('../models/Buku'),
+    Pengarang = require('../models/Pengarang'),
+    Penerbit    = require('../models/Penerbit')
 
 router.get('/list/:id?', function (req, res, next) {
     if (req.params.id) {
@@ -19,7 +21,7 @@ router.get('/list/:id?', function (req, res, next) {
             helper.resErr(res, 500, 'Buku is not found', err.errors[0])
         });
     } else {
-        let limit = 20;   // number of records per page
+        let limit = 10;   // number of records per page
         let offset = 0;
         buku.findAndCountAll().then(function (sum) {
             let page = 1
@@ -31,7 +33,11 @@ router.get('/list/:id?', function (req, res, next) {
             buku.findAll({
                 limit: limit,
                 offset: offset,
-                $sort: { id: 1 }
+                $sort: { id: 1 },
+                include: [
+                    { model: Pengarang, as: 'Pengarang'},
+                    { model: Penerbit, as: 'Penerbit'}
+                ]
             }).then(function (result) {
                 result = {
                     totalPages:pages,

@@ -14,7 +14,7 @@ router.post('/login', function (req, res, next) {
 
     var errors = req.validationErrors();
     if (errors) {
-        helper.resErr(res, 200, errors[0].param+errors[0].msg);
+        helper.resErr(res, 300, errors[0].param+errors[0].msg);
         return;
     } else {
         // normal processing here
@@ -39,10 +39,10 @@ router.post('/login', function (req, res, next) {
                     helper.resErr(res, 200, "Success Get Data", result);
                 });
             } else {
-                helper.resErr(res, 200, "Worng password")
+                helper.resErr(res, 300, "Worng password")
             }
         } else {
-            helper.resErr(res, 200, "Phone number or password wrong")
+            helper.resErr(res, 300, "Phone number or password wrong")
         }
     }
 
